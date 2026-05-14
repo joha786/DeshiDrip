@@ -67,6 +67,38 @@ function clearRememberToken($userId)
 
     $userId = (int) $userId;
     $query = "UPDATE users SET remember_token = NULL WHERE id = $userId";
+    return mysqli_query($conn, $query);
+}
+
+function updateUserProfile($id, $name, $email, $address, $phone, $profilePicture)
+{
+    global $conn;
+
+    $id = (int) $id;
+    $name = mysqli_real_escape_string($conn, $name);
+    $email = mysqli_real_escape_string($conn, $email);
+    $address = mysqli_real_escape_string($conn, $address);
+    $phone = mysqli_real_escape_string($conn, $phone);
+    $profilePicture = mysqli_real_escape_string($conn, $profilePicture);
+
+    $query = "UPDATE users SET name = '$name', email = '$email', address = '$address', phone = '$phone'";
+
+    if ($profilePicture != "") {
+        $query .= ", profile_picture = '$profilePicture'";
+    }
+
+    $query .= " WHERE id = $id";
+
+    return mysqli_query($conn, $query);
+}
+
+function updateUserPassword($id, $passwordHash)
+{
+    global $conn;
+
+    $id = (int) $id;
+    $passwordHash = mysqli_real_escape_string($conn, $passwordHash);
+    $query = "UPDATE users SET password_hash = '$passwordHash' WHERE id = $id";
 
     return mysqli_query($conn, $query);
 }
