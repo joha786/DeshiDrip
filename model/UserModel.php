@@ -17,3 +17,24 @@ function createUser($name, $email, $passwordHash, $role, $address, $phone)
 
     return mysqli_query($conn, $query);
 }
+function getUserByEmail($email)
+{
+    global $conn;
+
+    $email = mysqli_real_escape_string($conn, $email);
+    $query = "SELECT * FROM users WHERE email = '$email'";
+    $result = mysqli_query($conn, $query);
+
+    return mysqli_fetch_assoc($result);
+}
+
+function getUserById($id)
+{
+    global $conn;
+
+    $id = (int) $id;
+    $query = "SELECT * FROM users WHERE id = $id";
+    $result = mysqli_query($conn, $query);
+
+    return mysqli_fetch_assoc($result);
+}
