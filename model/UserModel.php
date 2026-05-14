@@ -38,3 +38,35 @@ function getUserById($id)
 
     return mysqli_fetch_assoc($result);
 }
+
+function getUserByRememberToken($token)
+{
+    global $conn;
+
+    $token = mysqli_real_escape_string($conn, $token);
+    $query = "SELECT * FROM users WHERE remember_token = '$token'";
+    $result = mysqli_query($conn, $query);
+
+    return mysqli_fetch_assoc($result);
+}
+
+function saveRememberToken($userId, $token)
+{
+    global $conn;
+
+    $userId = (int) $userId;
+    $token = mysqli_real_escape_string($conn, $token);
+    $query = "UPDATE users SET remember_token = '$token' WHERE id = $userId";
+
+    return mysqli_query($conn, $query);
+}
+
+function clearRememberToken($userId)
+{
+    global $conn;
+
+    $userId = (int) $userId;
+    $query = "UPDATE users SET remember_token = NULL WHERE id = $userId";
+
+    return mysqli_query($conn, $query);
+}
