@@ -102,3 +102,32 @@ function updateUserPassword($id, $passwordHash)
 
     return mysqli_query($conn, $query);
 }
+
+function getAllCustomers()
+{
+    global $conn;
+
+    $query = "SELECT * FROM users WHERE role = 'customer' ORDER BY id DESC";
+    $result = mysqli_query($conn, $query);
+    $customers = array();
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $customers[] = $row;
+    }
+
+    return $customers;
+}
+
+function deleteCustomerById($id)
+{
+    global $conn;
+
+    $id = (int) $id;
+    mysqli_query($conn, "DELETE FROM cart WHERE user_id = $id");
+    mysqli_query($conn, "DELETE payments FROM payments INNER JOIN orders ON payments.order_id = orders.id WHERE orders.user_id = $id");
+    mysqli_query($conn, "DELETE order_items FROM order_items INNER JOIN orders ON order_items.order_id = orders.id WHERE orders.user_id = $id");
+    mysqli_query($conn, "DELETE FROM orders WHERE user_id = $id");
+
+    return mysqli_query($conn, "DELETE FROM users WHERE id = $id AND role = 'customer'");
+}
+?>
