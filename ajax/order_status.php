@@ -21,4 +21,3 @@ if (updateOrderStatus($_POST["order_id"] ?? 0, $status)) {
     echo json_encode(array("status" => "error", "message" => "Update failed."));
 }
 ?>
-All the AJAX related code will be here
